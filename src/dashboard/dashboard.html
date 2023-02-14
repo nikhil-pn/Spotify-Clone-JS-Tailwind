@@ -1,16 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Spotify Player</title>
-    <link rel="stylesheet" href="../style.css">
-    <link rel="shortcut icon" href="../Spotify_Icon_RGB_Green.png" type="image/x-icon">i
-</head>
-<body class="bg-black h-screen grid place-content-center">
-    <h1 class="text-white grid place-items-center" >
-        Welcome to Dashboard
-    </h1>
-</body>
+    <link rel="stylesheet" href="../style.css" />
+    <link
+      rel="shortcut icon"
+      href="../Spotify_Icon_RGB_Green.png"
+      type="image/x-icon"
+    />
+  </head>
+  <body class="bg-black h-screen">
+    <main
+      class="text-white h-full grid-template grid-template-areas grid grid-cols-[250px_1fr] grid-rows-[1fr_auto]"
+    >
+      <aside id="sidenav">Sidenav</aside>
+      <section id="content">
+        <header>
+            <nav>Navigation Bar</nav>
+        </header>
+        <section>
+            content
+        </section>
+      </section>
+      <footer id="now-playing" class="grid w-screen place-items-center">
+        <h1>Footer</h1>
+      </footer>
+    </main>
+  </body>
 </html>

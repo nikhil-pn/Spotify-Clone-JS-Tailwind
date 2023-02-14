@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+.grid-template-areas{
+    grid-template-areas:
+    "sidenav content"
+    "footer footer" ;
+}
+.grid-template-areas #sidenav{
+    grid-area: sidenav;
+}
+
+.grid-template-areas #content{
+    grid-area: content;
+    background-color: lightgreen;
+} 
+.grid-template-areas #now-playing{
+    grid-area: footer;
+}
 
 @media (width <= 500px){
     #spotify-login-logo{
