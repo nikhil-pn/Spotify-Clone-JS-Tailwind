@@ -2,12 +2,9 @@ import { fetchRequest } from "../api";
 import { ENDPOINT, logout } from "../common";
 const displayName = document.querySelector("#display-name");
 
-const onProfileClick = (event) => {};
-
 const defaultName = document.querySelector("#display-name");
 const defaultImage = document.querySelector("#default-image");
 const defaultButton = document.querySelector("#user-profile-button");
-
 const defaultLogOutButton = document.querySelector("#default-logout-button");
 
 const loadUserProfile = async () => {
@@ -22,8 +19,12 @@ const loadUserProfile = async () => {
   } else {
     defaultImage.classList.remove("hidden");
   }
+};
 
-  defaultButton.addEventListener("click", onProfileClick);
+const loadFeaturedPlayList = async () => {
+  const playList = await fetchRequest(ENDPOINT.featuredPlayList);
+
+  console.log(playList, "playList");
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -34,10 +35,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       defaultLogOutButton.classList.add("hidden");
     }
   });
-
   defaultLogOutButton.addEventListener("click", () => {
     logout();
   });
 
   loadUserProfile();
+  loadFeaturedPlayList();
 });

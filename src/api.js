@@ -9,14 +9,13 @@ const getAccessToken = () => {
   const expiresIn = localStorage.getItem(EXPIRES_IN);
   const tokenType = localStorage.getItem(TOKEN_TYPE);
 
-  console.log(Date.now(), "date now");
-  console.log(expiresIn, "expires in");
+
+
   if (Date.now() > expiresIn) {
     return { accessToken, tokenType };
   } else {
     //logout the user
-    console.log("reached logout else part");
-    // logout();
+    logout();
   }
 };
 
