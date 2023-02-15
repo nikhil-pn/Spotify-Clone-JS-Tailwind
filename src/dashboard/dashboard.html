@@ -19,7 +19,7 @@
       <aside id="sidenav">Sidenav</aside>
       <section id="content">
         <header class="border-2 border-solid px-8 py-4">
-          <nav class="flex justify-end">
+          <nav class="flex justify-end relative">
             <button id="user-profile-button"
               class="flex gap-4 items-center hover:bg-green rounded-md px-4 py-2"
             >
@@ -45,6 +45,9 @@
                 <i class="hover:text-dark">▼</i>
               </section>
             </button>
+            <ul id="default-logout-button" class="hidden absolute top-12 right-0 px-10 py-2 rounded-md text-black bg-gray-50 p-1 hover:bg-red-500 hover:text-white ">
+              <li id="logout" class="w-full cursor-pointer hover:bg-red-500 " >Logout</li>
+            </ul>
           </nav>
         </header>
         <section>content</section>
