@@ -25,17 +25,16 @@ const onPlaylistItemClicked = (event) => {
   console.log(event.target);
 };
 
-const loadFeaturedPlayList = async (e, id) => {
-  const playlists = await fetchRequest(ENDPOINT.featuredPlayList);
+const loadPlayList = async (endpoint, elementID) => {
+  const playlists = await fetchRequest(endpoint);
   console.log(playlists, "items");
-  const playListItemsSection = document.querySelector(
-    "#featured-playlist-items"
-  );
+  const playListItemsSection = document.querySelector(`#${elementID}`);
   let playlistItems = ``;
   for (let { name, description, images, id } of playlists.playlists.items) {
     const playListItem = document.createElement("section");
 
-    playListItem.className = "rounded border-2 border-solid p-4 hover:cursor-pointer";
+    playListItem.className =
+      "rounded border-2 border-solid p-4 hover:cursor-pointer";
     playListItem.id = id;
     playListItem.setAttribute("data-type", "playlist");
     playListItem.addEventListener("click", onPlaylistItemClicked);
@@ -47,6 +46,10 @@ const loadFeaturedPlayList = async (e, id) => {
       <h3 class="text-xs">${description}</h3>`;
     playListItemsSection.appendChild(playListItem);
   }
+};
+
+const loadPlayLists = () => {
+  loadPlayList(ENDPOINT.featuredPlayList, "featured-playlist-items");
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -62,5 +65,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   loadUserProfile();
-  loadFeaturedPlayList();
+  loadPlayLists();
 });
