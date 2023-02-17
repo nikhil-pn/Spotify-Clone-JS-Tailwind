@@ -91,11 +91,11 @@ const loadPlaylistTracks = ({ tracks }) => {
       "track items-center justify-items-start rounded-md hover:bg-light-black grid grid-cols-[50px_2fr_1fr_50px] gap-4 text-gray-50";
     track.innerHTML = `
     <p class="justify-self-center" >${trackNumber+=1}</p>
-              <section  class="grid grid-cols-2 gap-2">
+              <section  class="grid grid-cols-[auto_1fr] place-items-center  gap-2">
                 <img  class="h-8 w-8" src="${image.url}" alt="${name}">
-                <article class="flex flex-col gap-1">
+                <article class="flex flex-col ">
                   <h2 class="text-primary text-xl">${name}</h2>
-                  <p class="text-sm">${Array.from(
+                  <p class="text-sm text-secondary">${Array.from(
                     artists,
                     (artist) => artist.name
                   ).join(", ")}</p>
