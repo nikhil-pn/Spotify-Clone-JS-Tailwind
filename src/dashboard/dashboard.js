@@ -91,4 +91,21 @@ document.addEventListener("DOMContentLoaded", async () => {
   loadUserProfile();
   fillContentForDashboard()
   loadPlayLists();
+
+  document.querySelector("#content").addEventListener("scroll", (e) => {
+    const {scrollTop} = e.target;
+
+    const header = document.querySelector("header")
+
+    if(scrollTop >= header.offsetHeight){
+      header.classList.add("sticky", "top-0", "bg-black-secondary");
+      header.classList.remove("bg-transparent");
+    }else{
+      header.classList.remove("sticky", "top-0", "bg-black-secondary");
+      header.classList.add("bg-transparent");
+    }
+
+  })
+
+
 });
