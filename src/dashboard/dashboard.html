@@ -17,8 +17,8 @@
       class="text-white h-full grid-template grid-template-areas grid grid-cols-[250px_1fr] grid-rows-[1fr_auto]"
     >
       <aside id="sidenav">Sidenav</aside>
-      <section id="content">
-        <header class="border-2 border-solid px-8 py-4">
+      <section id="content" class="bg-transparent overflow-auto relative">
+        <header class="border-2 border-solid px-8 py-4 bg-transparent">
           <nav class="flex justify-end relative">
             <button
               id="user-profile-button"
@@ -56,14 +56,14 @@
             </ul>
           </nav>
         </header>
-        <section class="p-4">
-          <h1 class="text-2xl">Featured</h1>
-          <section class="featured-songs grid grid-cols-auto-fill-cards gap-4" id="featured-playlist-items">
-            
-          </section>
-        </section>
+        <article id="cover-content" class="grid content-center   -z-[1] h-72 w-full absolute top-0 px-8 py-4 bg-gradient-to-b from-light-black to to-black-base">
+          <h1 class="text-6xl">Hello NIkhil</h1>
+        </article>
+        <article id="page-content" class="bg-black-base mt-48">
+        </article>
       </section>
-      <footer id="now-playing" class="grid w-screen place-items-center">
+
+      <footer id="now-playing" class="grid w-full place-items-center">
         <h1>Footer</h1>
       </footer>
     </main>

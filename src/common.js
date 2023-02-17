@@ -5,7 +5,8 @@ export const EXPIRES_IN = "expiresIn"
 const APP_URL = import.meta.env.VITE_APP_URL
 export const ENDPOINT = {
     userInfo :"me",
-    featuredPlayList : "browse/featured-playlists?limit=5"
+    featuredPlayList : "browse/featured-playlists?limit=5",
+    toplists: "browse/categories/toplists/playlists?limit=10",
 
 }
 

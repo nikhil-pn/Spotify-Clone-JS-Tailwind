@@ -34,7 +34,7 @@ const loadPlayList = async (endpoint, elementID) => {
     const playListItem = document.createElement("section");
 
     playListItem.className =
-      "rounded border-2 border-solid p-4 hover:cursor-pointer";
+      "bg-black-secondary rounded p-4 hover:cursor-pointer hover:bg-light-black";
     playListItem.id = id;
     playListItem.setAttribute("data-type", "playlist");
     playListItem.addEventListener("click", onPlaylistItemClicked);
@@ -42,7 +42,7 @@ const loadPlayList = async (endpoint, elementID) => {
 
     playListItem.innerHTML = `
       <img class="rounded mb-2 object-contain shadow" src='${imageUrl}'alt="${name}" />
-      <h2 class="text-sm">${name}</h2>
+      <h2 class="text-base font-semibold mb-4 truncate">${name}</h2>
       <h3 class="text-xs">${description}</h3>`;
     playListItemsSection.appendChild(playListItem);
   }
@@ -50,6 +50,30 @@ const loadPlayList = async (endpoint, elementID) => {
 
 const loadPlayLists = () => {
   loadPlayList(ENDPOINT.featuredPlayList, "featured-playlist-items");
+  loadPlayList(ENDPOINT.toplists, "top-playlist-items");
+};
+
+const fillContentForDashboard = () => {
+  const pageContent = document.querySelector("#page-content")
+
+  const playListMap = new Map([
+    ["featured", "featured-playlist-items"],
+    ["Top Playlist", "top-playlist-items"],
+  ]);
+
+  let innerHTML = "";
+  for (let [type, id] of playListMap) {
+    innerHTML += `
+    <section class="p-4">
+          <h1 class="text-2xl mb-4 font-bold capitalize ">${type}</h1>
+          <section
+            class="featured-songs grid grid-cols-auto-fill-cards gap-4"
+            id="${id}"
+          ></section>
+        </section>
+    `;
+  }
+  pageContent.innerHTML = innerHTML;
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -65,5 +89,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   loadUserProfile();
+  fillContentForDashboard()
   loadPlayLists();
 });
