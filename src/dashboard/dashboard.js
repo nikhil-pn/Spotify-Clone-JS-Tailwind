@@ -1,5 +1,5 @@
 import { fetchRequest } from "../api";
-import { ENDPOINT, logout } from "../common";
+import { ENDPOINT, logout, SECTIONTYPE } from "../common";
 const displayName = document.querySelector("#display-name");
 
 const defaultName = document.querySelector("#display-name");
@@ -22,7 +22,10 @@ const loadUserProfile = async () => {
 };
 
 const onPlaylistItemClicked = (event) => {
+  const section = {type: SECTIONTYPE.PLAYLIST}
   console.log(event.target);
+  history.pushState(section, "", "playlist");
+  loadSections(section);
 };
 
 const loadPlayList = async (endpoint, elementID) => {
@@ -54,7 +57,7 @@ const loadPlayLists = () => {
 };
 
 const fillContentForDashboard = () => {
-  const pageContent = document.querySelector("#page-content")
+  const pageContent = document.querySelector("#page-content");
 
   const playListMap = new Map([
     ["featured", "featured-playlist-items"],
@@ -76,6 +79,17 @@ const fillContentForDashboard = () => {
   pageContent.innerHTML = innerHTML;
 };
 
+const loadSections = (section) => {
+  if (section.type === SECTIONTYPE.DASHBOARD) {
+    fillContentForDashboard();
+    loadPlayLists();
+  } else {
+    //load the elements for the playlist
+    const pageContent = document.querySelector("#page-content")
+    pageContent.innerHTML = "playlists to be loaded"
+  }
+};
+
 document.addEventListener("DOMContentLoaded", async () => {
   defaultButton.addEventListener("click", () => {
     if (defaultLogOutButton.classList.contains("hidden")) {
@@ -88,24 +102,28 @@ document.addEventListener("DOMContentLoaded", async () => {
     logout();
   });
 
-  loadUserProfile();
-  fillContentForDashboard()
-  loadPlayLists();
+  const section = { type: SECTIONTYPE.DASHBOARD };
+  history.pushState(section, "", "");
+  loadSections(section);
+
+  // loadUserProfile();
+  // fillContentForDashboard();
+  // loadPlayLists();
 
   document.querySelector("#content").addEventListener("scroll", (e) => {
-    const {scrollTop} = e.target;
+    const { scrollTop } = e.target;
 
-    const header = document.querySelector("header")
+    const header = document.querySelector("header");
 
-    if(scrollTop >= header.offsetHeight){
+    if (scrollTop >= header.offsetHeight) {
       header.classList.add("sticky", "top-0", "bg-black-secondary");
       header.classList.remove("bg-transparent");
-    }else{
+    } else {
       header.classList.remove("sticky", "top-0", "bg-black-secondary");
       header.classList.add("bg-transparent");
     }
-
+  });
+  window.addEventListener("popstate", (e) => {
+    loadSections(e.state)
   })
-
-
 });
