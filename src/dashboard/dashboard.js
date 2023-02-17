@@ -21,10 +21,11 @@ const loadUserProfile = async () => {
   }
 };
 
-const onPlaylistItemClicked = (event) => {
-  const section = {type: SECTIONTYPE.PLAYLIST}
-  console.log(event.target);
-  history.pushState(section, "", "playlist");
+const onPlaylistItemClicked = (event, id) => {
+  const section = {type : SECTIONTYPE.PLAYLIST, playlist : id}
+  console.log(id, "id");
+  history.pushState(section, "", `playlist/${id}`);
+  console.log("section in clicked playlist", section);
   loadSections(section);
 };
 
@@ -40,7 +41,7 @@ const loadPlayList = async (endpoint, elementID) => {
       "bg-black-secondary rounded p-4 hover:cursor-pointer hover:bg-light-black";
     playListItem.id = id;
     playListItem.setAttribute("data-type", "playlist");
-    playListItem.addEventListener("click", onPlaylistItemClicked);
+    playListItem.addEventListener("click",(e) => onPlaylistItemClicked(e, id));
     const [{ url: imageUrl }] = images;
 
     playListItem.innerHTML = `
@@ -79,14 +80,23 @@ const fillContentForDashboard = () => {
   pageContent.innerHTML = innerHTML;
 };
 
+const fillContentForPlaylist = async (playlistID)=>{
+  const pageContent = document.querySelector("#page-content")
+  pageContent.innerHTML = "playlists to be loaded"
+  const playlist = await fetchRequest(`${ENDPOINT.playlist}/${playlistID}`)
+  console.log("playlist loaded", playlist);
+  pageContent.innerHTML = ""
+}
+
 const loadSections = (section) => {
+  console.log("section loaded", section);
   if (section.type === SECTIONTYPE.DASHBOARD) {
     fillContentForDashboard();
     loadPlayLists();
-  } else {
+  } else if(section.type === SECTIONTYPE.PLAYLIST) {
     //load the elements for the playlist
-    const pageContent = document.querySelector("#page-content")
-    pageContent.innerHTML = "playlists to be loaded"
+    fillContentForPlaylist(section.playlist)
+    
   }
 };
 

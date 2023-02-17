@@ -7,6 +7,7 @@ export const ENDPOINT = {
   userInfo: "me",
   featuredPlayList: "browse/featured-playlists?limit=5",
   toplists: "browse/categories/toplists/playlists?limit=10",
+  playlist :"playlists"
 };
 
 //logout
