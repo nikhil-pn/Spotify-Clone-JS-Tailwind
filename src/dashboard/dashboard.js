@@ -77,10 +77,18 @@ const fillContentForDashboard = () => {
   pageContent.innerHTML = innerHTML;
 };
 
+const formatTime = (duration) => {
+  const min = Math.floor(duration / 60_000);
+  const sec = ((duration % 60_00) / 1000).toFixed(0);
+  const formattedTime =
+    sec === 60 ? min + 1 + ":00" : min + ":" + (sec < 10 ? "0" : "") + sec;
+  return formattedTime;
+};
+
 const loadPlaylistTracks = ({ tracks }) => {
   const trackSections = document.querySelector("#tracks");
 
-  let trackNumber = 0
+  let trackNumber = 0;
   for (let trackItem of tracks.items) {
     let { id, artists, name, album, duration_ms: duration } = trackItem.track;
     let image = album.images[2];
@@ -90,7 +98,7 @@ const loadPlaylistTracks = ({ tracks }) => {
     track.className =
       "track items-center justify-items-start rounded-md hover:bg-light-black grid grid-cols-[50px_2fr_1fr_50px] gap-4 text-gray-50";
     track.innerHTML = `
-    <p class="justify-self-center" >${trackNumber+=1}</p>
+    <p class="justify-self-center" >${(trackNumber += 1)}</p>
               <section  class="grid grid-cols-[auto_1fr] place-items-center  gap-2">
                 <img  class="h-8 w-8" src="${image.url}" alt="${name}">
                 <article class="flex flex-col ">
@@ -102,7 +110,7 @@ const loadPlaylistTracks = ({ tracks }) => {
                 </article>
               </section>
               <p>${album.name}</p>
-              <p>${duration}</p>`;
+              <p>${formatTime(duration)}</p>`;
     trackSections.appendChild(track);
   }
 };
