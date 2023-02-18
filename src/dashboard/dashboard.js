@@ -100,17 +100,17 @@ const loadPlaylistTracks = ({ tracks }) => {
     track.innerHTML = `
     <p class="justify-self-center" >${(trackNumber += 1)}</p>
               <section  class="grid grid-cols-[auto_1fr] place-items-center  gap-2">
-                <img  class="h-8 w-8" src="${image.url}" alt="${name}">
-                <article class="flex flex-col ">
-                  <h2 class="text-primary text-xl">${name}</h2>
-                  <p class="text-sm text-secondary">${Array.from(
+                <img  class="h-10 w-10" src="${image.url}" alt="${name}">
+                <article class="flex flex-col gap-2 justify-center">
+                  <h2 class="text-primary text-base">${name}</h2>
+                  <p class="text-xs text-secondary">${Array.from(
                     artists,
                     (artist) => artist.name
                   ).join(", ")}</p>
                 </article>
               </section>
-              <p>${album.name}</p>
-              <p>${formatTime(duration)}</p>`;
+              <p class="text-sm">${album.name}</p>
+              <p class="text-sm">${formatTime(duration)}</p>`;
     trackSections.appendChild(track);
   }
 };
@@ -130,7 +130,7 @@ const fillContentForPlaylist = async (playlistID) => {
     </ul>
   </nav>
   </header>
-  <section id="tracks" class="px-8" >
+  <section id="tracks" class="px-8 text-secondary mt-4" >
 
   </section>`;
 
