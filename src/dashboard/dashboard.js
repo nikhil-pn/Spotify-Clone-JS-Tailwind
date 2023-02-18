@@ -96,7 +96,7 @@ const loadPlaylistTracks = ({ tracks }) => {
     let track = document.createElement("section");
     trackItem.id = id;
     track.className =
-      "track items-center justify-items-start rounded-md hover:bg-light-black grid grid-cols-[50px_2fr_1fr_50px] gap-4 text-gray-50";
+      "track items-center justify-items-start rounded-md hover:bg-light-black grid grid-cols-[50px_1fr_1fr_50px] gap-4 text-gray-50";
     track.innerHTML = `
     <p class="justify-self-center" >${(trackNumber += 1)}</p>
               <section  class="grid grid-cols-[auto_1fr] place-items-center  gap-2">
@@ -120,9 +120,9 @@ const fillContentForPlaylist = async (playlistID) => {
   pageContent.innerHTML = "playlists to be loaded";
   const playlist = await fetchRequest(`${ENDPOINT.playlist}/${playlistID}`);
   pageContent.innerHTML = `
-  <header class="px-8" id="playlist-header">
-  <nav>
-    <ul class=" grid grid-cols-[50px_2fr_1fr_50px] gap-4  text-secondary py-4">
+  <header class="mx-8 py-4 border-secondary border-b-[0.5px]" id="playlist-header">
+  <nav class="py-2">
+    <ul class=" grid grid-cols-[50px_1fr_1fr_50px] gap-4  text-secondary py-4">
       <li class="justify-self-center">#</li>
       <li>Title</li>
       <li>Album</li>
@@ -138,24 +138,42 @@ const fillContentForPlaylist = async (playlistID) => {
   loadPlaylistTracks(playlist);
 };
 
-const onContentScroll = (e)=>{
+const onContentScroll = (e) => {
   const { scrollTop } = e.target;
   const header = document.querySelector("#top-header");
+  const coverElement = document.querySelector("#cover-content");
+  const totalHeight = coverElement.offsetHeight;
+  const fiftyPercentHeight = totalHeight / 2;
+  const coverOpacity =
+    100 - (scrollTop >= totalHeight ? 100 : (scrollTop / totalHeight) * 100);
+  coverElement.style.opacity = `${coverOpacity}%`;
 
-    if (scrollTop >= header.offsetHeight) {
-      header.classList.add("sticky", "top-0", "bg-black-secondary");
-      header.classList.remove("bg-transparent");
+  let headerOpacity = 0;
+  // once 50% of cover element is crossed, start increasing the opacity
+  if (scrollTop >= fiftyPercentHeight && scrollTop <= totalHeight) {
+    let totatDistance = totalHeight - fiftyPercentHeight;
+    let coveredDistance = scrollTop - fiftyPercentHeight;
+    headerOpacity = (coveredDistance / totatDistance) * 100;
+  } else if (scrollTop > totalHeight) {
+    headerOpacity = 100;
+  } else if (scrollTop < fiftyPercentHeight) {
+    headerOpacity = 0;
+  }
+  header.style.background = `rgba(0 0 0 / ${headerOpacity}%)`;
+
+  if (history.state.type === SECTIONTYPE.PLAYLIST) {
+    const playlistHeader = document.querySelector("#playlist-header");
+    if (headerOpacity >= 60) {
+      playlistHeader.classList.add("sticky", "bg-black-secondary", "px-8");
+      playlistHeader.classList.remove("mx-8");
+      playlistHeader.style.top = `${header.offsetHeight}px`;
     } else {
-      header.classList.remove("sticky", "top-0", "bg-black-secondary");
-      header.classList.add("bg-transparent");
+      playlistHeader.classList.remove("sticky", "bg-black-secondary", "px-8");
+      playlistHeader.classList.add("mx-8");
+      playlistHeader.style.top = `revert`;
     }
-    if(history.state.type === SECTIONTYPE.PLAYLIST){
-      const playlistHeader = document.querySelector("#playlist-header");
-      if(scrollTop >= playlistHeader.offsetHeight) {
-        playlistHeader.classList.add("sticky", `top-[${header.offsetHeight}px]`)
-      }
-    }
-}
+  }
+};
 
 const loadSections = (section) => {
   if (section.type === SECTIONTYPE.DASHBOARD) {
@@ -165,8 +183,12 @@ const loadSections = (section) => {
     //load the elements for the playlist
     fillContentForPlaylist(section.playlist);
   }
-  document.querySelector("#content").removeEventListener("scroll", onContentScroll);
-  document.querySelector("#content").addEventListener("scroll", onContentScroll);
+  document
+    .querySelector("#content")
+    .removeEventListener("scroll", onContentScroll);
+  document
+    .querySelector("#content")
+    .addEventListener("scroll", onContentScroll);
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -181,11 +203,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     logout();
   });
 
-  const section = { type: SECTIONTYPE.DASHBOARD };
-  history.pushState(section, "", "");
+  // const section = { type: SECTIONTYPE.DASHBOARD };
+  const section = {
+    type: SECTIONTYPE.PLAYLIST,
+    playlist: "37i9dQZF1DXaotNUt9NoYd",
+  };
+  // history.pushState(section, "", "");
+  history.pushState(section, "", `/dashboard/playlist/${section.playlist}`);
   loadSections(section);
 
-  
   window.addEventListener("popstate", (e) => {
     loadSections(e.state);
   });
