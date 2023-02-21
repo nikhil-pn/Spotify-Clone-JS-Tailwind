@@ -86,16 +86,18 @@ const formatTime = (duration) => {
 };
 
 const onTrackSelection = (id, event) => {
-  console.log(id);
   document.querySelectorAll("#tracks .track").forEach((trackItem) => {
-    console.log(trackItem);
     if (trackItem.id == id) {
       trackItem.classList.add("bg-light-black", "selected");
     } else {
-      console.log(trackItem.id);
       trackItem.classList.remove("bg-light-black", "selected");
     }
   });
+};
+
+const onPlayTrack = (event, {image, duration, artistName, name, previewUrl, id }) => {
+  console.log("reached here");
+  console.log(image, duration, artistName, name, previewUrl, id );
 };
 
 const loadPlaylistTracks = ({ tracks }) => {
@@ -103,11 +105,12 @@ const loadPlaylistTracks = ({ tracks }) => {
 
   let trackNumber = 0;
   for (let trackItem of tracks.items) {
-    let { id, artists, name, album, duration_ms: duration } = trackItem.track;
+    let { id, artists, name, album, duration_ms: duration, preview_url: previewUrl } = trackItem.track;
     let image = album.images[2];
+    let artistName = Array.from(artists, (artist) => artist.name).join(", ");
     let track = document.createElement("section");
     track.id = id;
-    
+
     track.className =
       "track items-center justify-items-start rounded-md hover:bg-light-black grid grid-cols-[50px_1fr_1fr_50px] gap-4 text-gray-50";
     track.innerHTML = `
@@ -116,10 +119,7 @@ const loadPlaylistTracks = ({ tracks }) => {
                 <img  class="h-10 w-10" src="${image.url}" alt="${name}">
                 <article class="flex flex-col gap-2 justify-center">
                   <h2 class="text-primary text-base line-clamp-1">${name}</h2>
-                  <p class="text-xs text-secondary line-clamp-1 ">${Array.from(
-                    artists,
-                    (artist) => artist.name
-                  ).join(", ")}</p>
+                  <p class="text-xs text-secondary line-clamp-1 ">${artistName}</p>
                 </article>
               </section>
               <p class="text-sm">${album.name}</p>
@@ -132,6 +132,9 @@ const loadPlaylistTracks = ({ tracks }) => {
     playButton.id = `play-track${id}`;
     playButton.className = `play w-full absolute left-0 text-lg invisible`;
     playButton.textContent = "▶";
+    playButton.addEventListener("click", (e) =>
+      onPlayTrack(e, { image, duration, artistName, name, previewUrl, id })
+    );
     track.querySelector("p").appendChild(playButton);
     trackSections.appendChild(track);
   }
