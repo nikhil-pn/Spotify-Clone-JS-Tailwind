@@ -98,6 +98,11 @@ const onTrackSelection = (id, event) => {
 const onPlayTrack = (event, {image, duration, artistName, name, previewUrl, id }) => {
   console.log("reached here");
   console.log(image, duration, artistName, name, previewUrl, id );
+
+
+
+
+
 };
 
 const loadPlaylistTracks = ({ tracks }) => {
@@ -145,7 +150,7 @@ const fillContentForPlaylist = async (playlistID) => {
   pageContent.innerHTML = "playlists to be loaded";
   const playlist = await fetchRequest(`${ENDPOINT.playlist}/${playlistID}`);
   pageContent.innerHTML = `
-  <header class="mx-8 py-4 border-secondary border-b-[0.5px]" id="playlist-header">
+  <header class="mx-8 py-4 z-20 border-secondary border-b-[0.5px]" id="playlist-header">
   <nav class="py-2">
     <ul class=" grid grid-cols-[50px_1fr_1fr_50px] gap-4  text-secondary py-4">
       <li class="justify-self-center">#</li>

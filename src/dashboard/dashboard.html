@@ -22,7 +22,7 @@
     >
       <aside id="sidenav">Sidenav</aside>
       <section id="content" class="bg-transparent overflow-auto relative">
-        <header id="top-header" class="px-8 py-4 bg-transparent">
+        <header id="top-header" class="z-20 px-8 py-4 bg-transparent">
           <nav class="flex justify-end relative">
             <button
               id="user-profile-button"
@@ -67,7 +67,7 @@
           <h1 class="text-6xl">Hello NIkhil</h1>
         </article>
         <article id="page-content" class="bg-black-base mt-48">
-          <header class="px-8" id="playlist-header">
+          <header class="px-8 " id="playlist-header">
             <nav>
               <ul class="grid grid-cols-[50px_2fr_1fr_50px] gap-4 text-gray-50">
                 <li class="justify-self-center">#</li>
@@ -100,18 +100,21 @@
           </section>
           <section>
             <!-- section for audio control -->
-            <section id="audio-control" class="flex items-center justify-center flex-col gap-4">
+            <section
+              id="audio-control"
+              class="flex items-center justify-center flex-col gap-4"
+            >ḥ
               <section
                 class="flex items-center justify-center hover:text-white"
               >
                 <button id="prev">
-                  <span class="material-symbols-outlined"> skip_previous </span>
+                  <span style="font-size: 40px" class="material-symbols-outlined"> skip_previous </span>
                 </button>
                 <button id="play">
-                  <span class="material-symbols-outlined"> play_circle </span>
+                  <span style="font-size: 40px" class="material-symbols-outlined"> play_circle </span>
                 </button>
                 <button id="next">
-                  <span class="material-symbols-outlined"> skip_next </span>
+                  <span style="font-size: 40px" class="material-symbols-outlined"> skip_next </span>
                 </button>
               </section>
             </section>
@@ -128,7 +131,10 @@
             </section>
             <!-- section for volume control -->
           </section>
-          <section>volume</section>
+          <section id="volume-control" class="flex justify-center gap-1 items-center">
+            <span class="material-symbols-outlined"> volume_up </span>
+            <input  type="range" name="" min="0" max="100" value="50" id="volume"/>
+          </section>
         </section>
       </footer>
     </main>

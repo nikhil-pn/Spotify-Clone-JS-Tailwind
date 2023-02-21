@@ -2,39 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
-.grid-template-areas{
-    grid-template-areas:
+.grid-template-areas {
+  grid-template-areas:
     "sidenav content"
-    "footer footer" ;
+    "footer footer";
 }
-.grid-template-areas #sidenav{
-    grid-area: sidenav;
-}
-
-.grid-template-areas #content{
-    grid-area: content;
-} 
-.grid-template-areas #now-playing{
-    grid-area: footer;
+.grid-template-areas #sidenav {
+  grid-area: sidenav;
 }
 
-.track:hover .track-no, .track.selected .track-no{
-    visibility: hidden;
+.grid-template-areas #content {
+  grid-area: content;
 }
-.track:hover .play, .track.selected .play{
-    visibility: visible;
+.grid-template-areas #now-playing {
+  grid-area: footer;
+}
+
+.track:hover .track-no,
+.track.selected .track-no {
+  visibility: hidden;
+}
+.track:hover .play,
+.track.selected .play {
+  visibility: visible;
 }
 
 .material-symbols-outlined {
-    font-variation-settings:
-    'FILL' 1,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 48
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 48;
 }
 
-@media (width <= 500px){
-    #spotify-login-logo{
-        height: 10vh;
-    }
+@media (width <= 500px) {
+  #spotify-login-logo {
+    height: 10vh;
+  }
 }
