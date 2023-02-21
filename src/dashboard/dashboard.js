@@ -113,7 +113,9 @@ const loadPlaylistTracks = ({ tracks }) => {
               <p class="text-sm">${formatTime(duration)}</p>`;
     let playButton = document.createElement("button")
     playButton.id = `play-track${id}`   
-    playButton.className  = `play w-full absolute`
+    playButton.className  = `play w-full absolute left-0 text-lg invisible`
+    playButton.textContent = "▶"
+    track.querySelector("p").appendChild(playButton)
     trackSections.appendChild(track);
   }
 };

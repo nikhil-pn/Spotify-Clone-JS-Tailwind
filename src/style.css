@@ -18,6 +18,14 @@
     grid-area: footer;
 }
 
+.track:hover .track-no{
+    visibility: hidden;
+}
+.track:hover .play{
+    visibility: visible;
+}
+
+
 @media (width <= 500px){
     #spotify-login-logo{
         height: 10vh;
