@@ -95,14 +95,19 @@ const onTrackSelection = (id, event) => {
   });
 };
 
-const onPlayTrack = (event, {image, duration, artistName, name, previewUrl, id }) => {
+const onPlayTrack = (
+  event,
+  { image, duration, artistName, name, previewUrl, id }
+) => {
   console.log("reached here");
-  console.log(image, duration, artistName, name, previewUrl, id );
+  console.log(image, duration, artistName, name, previewUrl, id);
 
-
-
-
-
+  const nowPlayingSongImage = document.querySelector("#now-playing-image");
+  const nowPlayingSongArtists = document.querySelector("#now-playing-artists");
+  const nowPlayingTitle = document.querySelector("#now-playing-song");
+  nowPlayingSongImage.src = image.url;
+  nowPlayingTitle.textContent = name
+  nowPlayingSongArtists.textContent = artistName
 };
 
 const loadPlaylistTracks = ({ tracks }) => {
@@ -110,7 +115,14 @@ const loadPlaylistTracks = ({ tracks }) => {
 
   let trackNumber = 0;
   for (let trackItem of tracks.items) {
-    let { id, artists, name, album, duration_ms: duration, preview_url: previewUrl } = trackItem.track;
+    let {
+      id,
+      artists,
+      name,
+      album,
+      duration_ms: duration,
+      preview_url: previewUrl,
+    } = trackItem.track;
     let image = album.images[2];
     let artistName = Array.from(artists, (artist) => artist.name).join(", ");
     let track = document.createElement("section");
