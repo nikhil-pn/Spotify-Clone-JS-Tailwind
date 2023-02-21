@@ -9,6 +9,8 @@ const songDurationCompleted = document.querySelector("#songDurationCompleted")
 const songProgress = document.querySelector("#progress") 
 let progressInterval;
 
+const timeline = document.querySelector("#timeline")
+
 const displayName = document.querySelector("#display-name");
 const defaultName = document.querySelector("#display-name");
 const defaultImage = document.querySelector("#default-image");
@@ -127,15 +129,15 @@ const onPlayTrack = (
   audio.removeEventListener("loadedmetadata", onAudioMetaDataLoaded)
   audio.addEventListener("loadedmetadata", onAudioMetaDataLoaded)
   audio.src = previewUrl
-  setInterval(()=>{
+  progressInterval = setInterval(()=>{
     if(audio.paused){
       return;
     }
     songDurationCompleted.textContent = `0:${audio.currentTime.toFixed(0)}`
-    songProgress.style.width = (audio.currentTime / audio.duration) *100 + "%"
+    songProgress.style.width = `${(audio.currentTime / audio.duration) * 100}%`;
   }, 100)
   audio.play();
-
+  
 };
 
 const loadPlaylistTracks = ({ tracks }) => {

@@ -67,7 +67,7 @@
           <h1 class="text-6xl">Hello NIkhil</h1>
         </article>
         <article id="page-content" class="bg-black-base mt-48">
-          <header class="px-8 " id="playlist-header">
+          <header class="px-8" id="playlist-header">
             <nav>
               <ul class="grid grid-cols-[50px_2fr_1fr_50px] gap-4 text-gray-50">
                 <li class="justify-self-center">#</li>
@@ -108,32 +108,59 @@
                 class="flex items-center justify-center hover:text-white"
               >
                 <button id="prev">
-                  <span style="font-size: 40px" class="material-symbols-outlined"> skip_previous </span>
+                  <span
+                    style="font-size: 40px"
+                    class="material-symbols-outlined"
+                  >
+                    skip_previous
+                  </span>
                 </button>
                 <button id="play">
-                  <span style="font-size: 40px" class="material-symbols-outlined"> play_circle </span>
+                  <span
+                    style="font-size: 40px"
+                    class="material-symbols-outlined"
+                  >
+                    play_circle
+                  </span>
                 </button>
                 <button id="next">
-                  <span style="font-size: 40px" class="material-symbols-outlined"> skip_next </span>
+                  <span
+                    style="font-size: 40px"
+                    class="material-symbols-outlined"
+                  >
+                    skip_next
+                  </span>
                 </button>
               </section>
             </section>
-            <section
-              class="w-full flex items-center justify-center p-1 gap-4"
-              id="timeline"
-            >
+            <section class="w-full flex items-center justify-center p-1 gap-4">
               <span id="songDurationCompleted">0:00</span>
               <section
-                id="progress"
-                class="h-2 w-full cursor-pointer rounded-3xl bg-secondary"
-              ></section>
+                id="timeline"
+                class="w-full cursor-pointer rounded-3xl bg-secondary"
+              >
+                <section
+                  id="progress"
+                  class="h-2 w-0 rounded-3xl bg-green"
+                ></section>
+              </section>
               <span id="total-song-duration">0:00</span>
             </section>
             <!-- section for volume control -->
           </section>
-          <section id="volume-control" class="flex justify-center gap-1 items-center">
+          <section
+            id="volume-control"
+            class="flex justify-center gap-1 items-center"
+          >
             <span class="material-symbols-outlined"> volume_up </span>
-            <input  type="range" name="" min="0" max="100" value="50" id="volume"/>
+            <input
+              type="range"
+              name=""
+              min="0"
+              max="100"
+              value="50"
+              id="volume"
+            />
           </section>
         </section>
       </footer>
