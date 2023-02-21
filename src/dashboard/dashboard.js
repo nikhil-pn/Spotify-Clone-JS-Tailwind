@@ -98,12 +98,12 @@ const loadPlaylistTracks = ({ tracks }) => {
     track.className =
       "track items-center justify-items-start rounded-md hover:bg-light-black grid grid-cols-[50px_1fr_1fr_50px] gap-4 text-gray-50";
     track.innerHTML = `
-    <p class="justify-self-center" >${(trackNumber += 1)}</p>
+    <p class=" relative w-full flex items-center justify-center justify-self-center" ><span class="track-no">${(trackNumber += 1)}</span></p>
               <section  class="grid grid-cols-[auto_1fr] place-items-center  gap-2">
                 <img  class="h-10 w-10" src="${image.url}" alt="${name}">
                 <article class="flex flex-col gap-2 justify-center">
-                  <h2 class="text-primary text-base">${name}</h2>
-                  <p class="text-xs text-secondary">${Array.from(
+                  <h2 class="text-primary text-base line-clamp-1">${name}</h2>
+                  <p class="text-xs text-secondary line-clamp-1 ">${Array.from(
                     artists,
                     (artist) => artist.name
                   ).join(", ")}</p>
@@ -111,6 +111,9 @@ const loadPlaylistTracks = ({ tracks }) => {
               </section>
               <p class="text-sm">${album.name}</p>
               <p class="text-sm">${formatTime(duration)}</p>`;
+    let playButton = document.createElement("button")
+    playButton.id = `play-track${id}`   
+    playButton.className  = `play w-full absolute`
     trackSections.appendChild(track);
   }
 };
@@ -143,10 +146,10 @@ const onContentScroll = (e) => {
   const header = document.querySelector("#top-header");
 
   if (scrollTop >= header.offsetHeight) {
-    header.classList.add("sticky", "top-0", "bg-black-secondary");
+    header.classList.add("sticky", "top-0", "bg-black");
     header.classList.remove("bg-transparent");
   } else {
-    header.classList.remove("sticky", "top-0", "bg-black-secondary");
+    header.classList.remove("sticky", "top-0", "bg-black");
     header.classList.add("bg-transparent");
   }
 
