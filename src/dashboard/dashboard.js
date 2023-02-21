@@ -1,7 +1,15 @@
 import { fetchRequest } from "../api";
 import { ENDPOINT, logout, SECTIONTYPE } from "../common";
-const displayName = document.querySelector("#display-name");
 
+const audio = new Audio();
+const volulme = document.querySelector("#volume")
+const playButton = document.querySelector("#play")
+const totalSongDuration = document.querySelector("#total-song-duration")
+const songDurationCompleted = document.querySelector("#songDurationCompleted")
+const songProgress = document.querySelector("#progress") 
+let progressInterval;
+
+const displayName = document.querySelector("#display-name");
 const defaultName = document.querySelector("#display-name");
 const defaultImage = document.querySelector("#default-image");
 const defaultButton = document.querySelector("#user-profile-button");
@@ -95,6 +103,13 @@ const onTrackSelection = (id, event) => {
   });
 };
 
+// const timeline = document.querySelectorAll("#timeline")
+
+const onAudioMetaDataLoaded = ()=>{
+  totalSongDuration.textContent = `0:${audio.duration.toFixed(0)}`;
+
+}
+
 const onPlayTrack = (
   event,
   { image, duration, artistName, name, previewUrl, id }
@@ -106,8 +121,14 @@ const onPlayTrack = (
   const nowPlayingSongArtists = document.querySelector("#now-playing-artists");
   const nowPlayingTitle = document.querySelector("#now-playing-song");
   nowPlayingSongImage.src = image.url;
-  nowPlayingTitle.textContent = name
-  nowPlayingSongArtists.textContent = artistName
+  nowPlayingTitle.textContent = name;
+  nowPlayingSongArtists.textContent = artistName;
+  
+  audio.removeEventListener("loadedmetadata", onAudioMetaDataLoaded)
+  audio.addEventListener("loadedmetadata", onAudioMetaDataLoaded)
+  audio.src = previewUrl
+  audio.play();
+
 };
 
 const loadPlaylistTracks = ({ tracks }) => {
