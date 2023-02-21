@@ -5,6 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Spotify Player</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
     <link rel="stylesheet" href="../style.css" />
     <link
       rel="shortcut icon"
@@ -18,7 +22,7 @@
     >
       <aside id="sidenav">Sidenav</aside>
       <section id="content" class="bg-transparent overflow-auto relative">
-        <header id="top-header" class=" px-8 py-4 bg-transparent">
+        <header id="top-header" class="px-8 py-4 bg-transparent">
           <nav class="flex justify-end relative">
             <button
               id="user-profile-button"
@@ -56,13 +60,16 @@
             </ul>
           </nav>
         </header>
-        <article id="cover-content" class="grid content-center   -z-[1] h-72 w-full absolute top-0 px-8 py-4 bg-gradient-to-b from-light-black to to-black-base">
+        <article
+          id="cover-content"
+          class="grid content-center -z-[1] h-72 w-full absolute top-0 px-8 py-4 bg-gradient-to-b from-light-black to to-black-base"
+        >
           <h1 class="text-6xl">Hello NIkhil</h1>
         </article>
         <article id="page-content" class="bg-black-base mt-48">
           <header class="px-8" id="playlist-header">
             <nav>
-              <ul class=" grid grid-cols-[50px_2fr_1fr_50px] gap-4 text-gray-50">
+              <ul class="grid grid-cols-[50px_2fr_1fr_50px] gap-4 text-gray-50">
                 <li class="justify-self-center">#</li>
                 <li>Title</li>
                 <li>Album</li>
@@ -70,14 +77,48 @@
               </ul>
             </nav>
           </header>
-          <section id="tracks" class="px-8" >
-         
-          </section>
+          <section id="tracks" class="px-8"></section>
         </article>
       </section>
 
-      <footer id="now-playing" class="grid w-full place-items-center">
-        <h1>Footer</h1>
+      <footer
+        id="now-playing"
+        class="grid w-full place-items-center border-t border-t-light-black bg-black-secondary px-4 text-secondary"
+      >
+        <section class="grid grid-cols-[1fr_2fr_1fr] gap-4 w-full">
+          <section class="grid grid-cols-[auto_1fr] place-content-center gap-4">
+            <img id="now-playing-image" class="h-12 w-12" src="" alt=" " />
+            <section class="flex flex-col justify-center">
+              <h2
+                id="now-playing-song"
+                class="text-sm font-semibold text-white"
+              >
+                Song Title
+              </h2>
+              <p id="now-playing-artists" class="text-xs">Song artists</p>
+            </section>
+          </section>
+          <section>
+            <!-- section for audio control -->
+            <section id="audio-control">
+              <section
+                class="flex items-center justify-center hover:text-white"
+              >
+                <button id="prev">
+                  <span class="material-symbols-outlined"> skip_previous </span>
+                </button>
+                <button id="play">
+                  <span class="material-symbols-outlined"> play_circle </span>
+                </button>
+                <button id="next">
+                  <span class="material-symbols-outlined"> skip_next </span>
+                </button>
+              </section>
+            </section>
+            <!-- section for volume control -->
+          </section>
+          <section>volume</section>
+        </section>
       </footer>
     </main>
     <script type="module" src="dashboard.js"></script>
