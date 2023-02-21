@@ -127,6 +127,13 @@ const onPlayTrack = (
   audio.removeEventListener("loadedmetadata", onAudioMetaDataLoaded)
   audio.addEventListener("loadedmetadata", onAudioMetaDataLoaded)
   audio.src = previewUrl
+  setInterval(()=>{
+    if(audio.paused){
+      return;
+    }
+    songDurationCompleted.textContent = `0:${audio.currentTime.toFixed(0)}`
+    songProgress.style.width = (audio.currentTime / audio.duration) *100 + "%"
+  }, 100)
   audio.play();
 
 };
