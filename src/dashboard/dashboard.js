@@ -85,6 +85,19 @@ const formatTime = (duration) => {
   return formattedTime;
 };
 
+const onTrackSelection = (id, event) => {
+  console.log(id);
+  document.querySelectorAll("#tracks .track").forEach((trackItem) => {
+    console.log(trackItem);
+    if (trackItem.id == id) {
+      trackItem.classList.add("bg-light-black", "selected");
+    } else {
+      console.log(trackItem.id);
+      trackItem.classList.remove("bg-light-black", "selected");
+    }
+  });
+};
+
 const loadPlaylistTracks = ({ tracks }) => {
   const trackSections = document.querySelector("#tracks");
 
@@ -92,9 +105,9 @@ const loadPlaylistTracks = ({ tracks }) => {
   for (let trackItem of tracks.items) {
     let { id, artists, name, album, duration_ms: duration } = trackItem.track;
     let image = album.images[2];
-    console.log(image, "image");
     let track = document.createElement("section");
-    trackItem.id = id;
+    track.id = id;
+    
     track.className =
       "track items-center justify-items-start rounded-md hover:bg-light-black grid grid-cols-[50px_1fr_1fr_50px] gap-4 text-gray-50";
     track.innerHTML = `
@@ -111,11 +124,15 @@ const loadPlaylistTracks = ({ tracks }) => {
               </section>
               <p class="text-sm">${album.name}</p>
               <p class="text-sm">${formatTime(duration)}</p>`;
-    let playButton = document.createElement("button")
-    playButton.id = `play-track${id}`   
-    playButton.className  = `play w-full absolute left-0 text-lg invisible`
-    playButton.textContent = "▶"
-    track.querySelector("p").appendChild(playButton)
+    track.addEventListener("click", (e) => {
+      onTrackSelection(id, e);
+    });
+
+    let playButton = document.createElement("button");
+    playButton.id = `play-track${id}`;
+    playButton.className = `play w-full absolute left-0 text-lg invisible`;
+    playButton.textContent = "▶";
+    track.querySelector("p").appendChild(playButton);
     trackSections.appendChild(track);
   }
 };
