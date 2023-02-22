@@ -207,11 +207,15 @@ const playTrack = (
     nowPlayingSongArtists.textContent = artistName;
 
     const audioControl = document.querySelector("#audio-control");
+    const songInfo = document.querySelector("#song-info")
+
+    
 
     audioControl.setAttribute("data-track-id", id);
     audio.src = previewUrl;
 
     audio.play();
+    songInfo.classList.remove("invisible")
   }
 };
 
