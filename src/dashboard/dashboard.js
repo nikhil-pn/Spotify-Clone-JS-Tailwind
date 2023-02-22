@@ -1,6 +1,7 @@
 import { fetchRequest } from "../api";
 import {
   ENDPOINT,
+  getItemFromLocalStorage,
   LOADED_TRACKS,
   logout,
   SECTIONTYPE,
@@ -159,8 +160,32 @@ const togglePlay = () => {
   }
 };
 
-const playNextTrack = () => {};
-const playPrevTrack = () => {};
+const findCurrentTrack = () => {
+  const audioControl = document.querySelector("#audio-control");
+  const trackId = audioControl.getAttribute("data-track-id");
+
+  if (trackId) {
+    const loadedTracks = getItemFromLocalStorage(LOADED_TRACKS);
+    const currentTrackIndex = loadedTracks?.findIndex(
+      (track) => track.id === trackId
+    );
+    return { currentTrackIndex, tracks: loadedTracks };
+  }
+  return null;
+};
+
+const playNextTrack = () => {
+  const { currentTrackIndex = -1, tracks = null } = findCurrentTrack() ?? {};
+  if (currentTrackIndex > -1 && currentTrackIndex < tracks?.length - 1) {
+    playTrack(null, tracks[currentTrackIndex + 1]);
+  }
+};
+const playPrevTrack = () => {
+  const { currentTrackIndex = -1, tracks = null } = findCurrentTrack() ?? {};
+  if (currentTrackIndex > 0) {
+    playTrack(null, tracks[currentTrackIndex -1]);
+  }
+};
 
 const playTrack = (
   event,
