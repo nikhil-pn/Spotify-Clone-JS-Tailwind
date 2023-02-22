@@ -1,5 +1,11 @@
 import { fetchRequest } from "../api";
-import { ENDPOINT, logout, SECTIONTYPE } from "../common";
+import {
+  ENDPOINT,
+  LOADED_TRACKS,
+  logout,
+  SECTIONTYPE,
+  setItemInLocalStorage,
+} from "../common";
 
 const audio = new Audio();
 // const volulme = document.querySelector("#volume");
@@ -153,12 +159,15 @@ const togglePlay = () => {
   }
 };
 
+const playNextTrack = () => {};
+const playPrevTrack = () => {};
+
 const playTrack = (
   event,
   { image, duration, artistName, name, previewUrl, id }
 ) => {
-  if(event?.stopPropagation){
-    event.stopPropagation()
+  if (event?.stopPropagation) {
+    event.stopPropagation();
   }
   if (audio.src === previewUrl) {
     togglePlay();
@@ -184,8 +193,9 @@ const playTrack = (
 const loadPlaylistTracks = ({ tracks }) => {
   const trackSections = document.querySelector("#tracks");
 
+  const loadedTracks = [];
   let trackNumber = 0;
-  for (let trackItem of tracks.items) {
+  for (let trackItem of tracks.items.filter((item) => item.track.preview_url)) {
     let {
       id,
       artists,
@@ -225,7 +235,17 @@ const loadPlaylistTracks = ({ tracks }) => {
     );
     track.querySelector("p").appendChild(playButton);
     trackSections.appendChild(track);
+    loadedTracks.push({
+      id,
+      artistName,
+      name,
+      album,
+      duration,
+      previewUrl,
+      image,
+    });
   }
+  setItemInLocalStorage(LOADED_TRACKS, loadedTracks);
 };
 
 const fillContentForPlaylist = async (playlistID) => {
@@ -318,6 +338,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const songProgress = document.querySelector("#progress");
   let timeline = document.querySelector("#timeline");
   const audioControl = document.querySelector("#audio-control");
+
+  const next = document.querySelector("#next");
+  const prev = document.querySelector("#prev");
+
   let progressInterval;
   loadUserProfile();
   defaultButton.addEventListener("click", () => {
@@ -343,12 +367,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   audio.addEventListener("play", () => {
     const selectedTrackId = audioControl.getAttribute("data-track-id");
 
-    const tracks = document.querySelector("#tracks")
-    let playingTrack = tracks?.querySelector("section.playing")
+    const tracks = document.querySelector("#tracks");
+    let playingTrack = tracks?.querySelector("section.playing");
     const selectedTrack = tracks?.querySelector(`[id="${selectedTrackId}"]`);
     selectedTrack?.classList.add("playing");
 
-    if(playingTrack?.id !==selectedTrack?.id){
+    if (playingTrack?.id !== selectedTrack?.id) {
       playingTrack?.classList.remove("playing");
     }
     progressInterval = setInterval(() => {
@@ -370,8 +394,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const selectedTrackId = audioControl.getAttribute("data-track-id");
     updatIconsForPauseMode(selectedTrackId);
-
-
   });
 
   audio.addEventListener("loadedmetadata", onAudioMetaDataLoaded);
@@ -400,6 +422,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     },
     false
   );
+
+  next.addEventListener("click", playNextTrack);
+  prev.addEventListener("click", playPrevTrack);
 
   window.addEventListener("popstate", (e) => {
     loadSections(e.state);

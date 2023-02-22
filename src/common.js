@@ -1,13 +1,14 @@
 export const ACCESS_TOKEN = "accessToken";
 export const TOKEN_TYPE = "tokenType";
 export const EXPIRES_IN = "expiresIn";
+export const LOADED_TRACKS = "LOADED_TRACKS";
 
 const APP_URL = import.meta.env.VITE_APP_URL;
 export const ENDPOINT = {
   userInfo: "me",
   featuredPlayList: "browse/featured-playlists?limit=5",
   toplists: "browse/categories/toplists/playlists?limit=10",
-  playlist :"playlists"
+  playlist: "playlists",
 };
 
 //logout
@@ -17,6 +18,12 @@ export const logout = () => {
   localStorage.removeItem(TOKEN_TYPE);
   window.location.href = APP_URL;
 };
+
+export const setItemInLocalStorage = (key, value) =>
+  localStorage.setItem(key, JSON.stringify(value));
+
+export const getItemFromLocalStorage = (key) =>
+  JSON.parse(localStorage.getItem(key));
 
 export const SECTIONTYPE = {
   DASHBOARD: "DASHBOARD",
