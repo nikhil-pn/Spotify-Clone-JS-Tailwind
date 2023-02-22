@@ -9,7 +9,7 @@ const songDurationCompleted = document.querySelector("#songDurationCompleted");
 const songProgress = document.querySelector("#progress");
 let progressInterval;
 
-const timeline = document.querySelector("#timeline");
+let timeline = document.querySelector("#timeline");
 
 const displayName = document.querySelector("#display-name");
 const defaultName = document.querySelector("#display-name");
@@ -154,7 +154,6 @@ const onPlayTrack = (
       audio.pause();
     }
   } else {
-
     const nowPlayingSongImage = document.querySelector("#now-playing-image");
     const nowPlayingSongArtists = document.querySelector(
       "#now-playing-artists"
@@ -321,9 +320,26 @@ document.addEventListener("DOMContentLoaded", async () => {
   history.pushState(section, "", `/dashboard/playlist/${section.playlist}`);
   loadSections(section);
 
-  volulme.addEventListener("change", ()=>{
-    audio.volume = volulme.value / 100
-  })
+  volulme.addEventListener("change", () => {
+    audio.volume = volulme.value / 100;
+  });
+
+  timeline.addEventListener(
+    "click",
+    (e) => {
+      console.log("reached here");
+      const timelineWidth = window.getComputedStyle(timeline).width;
+      console.log(timelineWidth, "timeline width");
+      console.log(e.offSetX, "off set");
+      console.log(audio.duration, "duration");
+      const timeToSeek = (e.offsetX / parseInt(timelineWidth)) * audio.duration;
+      
+      console.log(timeToSeek, "timeToSeek");
+      audio.currentTime = timeToSeek;
+
+      songProgress.style.width = `${(audio.currentTime / audio.duration) * 100}%`;
+    },false
+  );
 
   window.addEventListener("popstate", (e) => {
     loadSections(e.state);
