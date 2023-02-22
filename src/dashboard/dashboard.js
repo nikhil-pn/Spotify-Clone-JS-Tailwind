@@ -2,14 +2,14 @@ import { fetchRequest } from "../api";
 import { ENDPOINT, logout, SECTIONTYPE } from "../common";
 
 const audio = new Audio();
-const volulme = document.querySelector("#volume");
-const playButton = document.querySelector("#play");
-const totalSongDuration = document.querySelector("#total-song-duration");
-const songDurationCompleted = document.querySelector("#songDurationCompleted");
-const songProgress = document.querySelector("#progress");
-let progressInterval;
+// const volulme = document.querySelector("#volume");
+// const playButton = document.querySelector("#play");
+// const totalSongDuration = document.querySelector("#total-song-duration");
+// const songDurationCompleted = document.querySelector("#songDurationCompleted");
+// const songProgress = document.querySelector("#progress");
+// let progressInterval;
 
-let timeline = document.querySelector("#timeline");
+// let timeline = document.querySelector("#timeline");
 
 const displayName = document.querySelector("#display-name");
 const defaultName = document.querySelector("#display-name");
@@ -108,22 +108,29 @@ const onTrackSelection = (id, event) => {
 // const timeline = document.querySelectorAll("#timeline")
 
 const onAudioMetaDataLoaded = (id) => {
+  const totalSongDuration = document.querySelector("#total-song-duration");
   totalSongDuration.textContent = `0:${audio.duration.toFixed(0)}`;
-  updateIconsForPlayMode(id);
+  // updateIconsForPlayMode(id);
 };
 
 const updateIconsForPlayMode = (id) => {
+  const playButton = document.querySelector("#play");
   playButton.querySelector("span").textContent = "pause_circle";
-  const playButtonFromTracks = document.querySelector(`#play-track${id}`);
-  playButtonFromTracks.textContent = "||";
-  playButtonFromTracks.setAttribute("data-play", "true");
+  const playButtonFromTracks = document.querySelector(`#play-track-${id}`);
+
+  if (playButtonFromTracks) {
+    playButtonFromTracks.textContent = "pause";
+  }
 };
 
 const updatIconsForPauseMode = (id) => {
+  const playButton = document.querySelector("#play");
   playButton.querySelector("span").textContent = "play_circle";
-  const playButtonFromTracks = document.querySelector(`#play-track${id}`);
-  playButtonFromTracks.textContent = "▶";
-  playButtonFromTracks.removeAttribute("data-play");
+  const playButtonFromTracks = document.querySelector(`#play-track-${id}`);
+
+  if (playButtonFromTracks) {
+    playButtonFromTracks.textContent = "play_arrow";
+  }
 };
 
 const onNowPlayingPlayButtonClicked = (id) => {
@@ -136,23 +143,22 @@ const onNowPlayingPlayButtonClicked = (id) => {
   }
 };
 
-const onPlayTrack = (
+const togglePlay = () => {
+  if (audio.src) {
+    if (audio.paused) {
+      audio.play();
+    } else {
+      audio.pause();
+    }
+  }
+};
+
+const playTrack = (
   event,
   { image, duration, artistName, name, previewUrl, id }
 ) => {
-  console.log("reached here");
-  console.log(image, duration, artistName, name, previewUrl, id);
-
-  const buttonWithDataPlay = document.querySelector("[data-play]");
-
-  if (buttonWithDataPlay?.id === `play-track${id}`) {
-    if (audio.paused) {
-      audio.play();
-      updateIconsForPlayMode(id);
-    } else {
-      updatIconsForPauseMode(id);
-      audio.pause();
-    }
+  if (audio.src === previewUrl) {
+    togglePlay();
   } else {
     const nowPlayingSongImage = document.querySelector("#now-playing-image");
     const nowPlayingSongArtists = document.querySelector(
@@ -163,24 +169,12 @@ const onPlayTrack = (
     nowPlayingTitle.textContent = name;
     nowPlayingSongArtists.textContent = artistName;
 
-    audio.removeEventListener("loadedmetadata", () =>
-      onAudioMetaDataLoaded(id)
-    );
-    audio.addEventListener("loadedmetadata", () => onAudioMetaDataLoaded(id));
+    const audioControl = document.querySelector("#audio-control");
+
+    audioControl.setAttribute("data-track-id", id);
     audio.src = previewUrl;
-    progressInterval = setInterval(() => {
-      if (audio.paused) {
-        return;
-      }
-      songDurationCompleted.textContent = `0:${audio.currentTime.toFixed(0)}`;
-      songProgress.style.width = `${
-        (audio.currentTime / audio.duration) * 100
-      }%`;
-    }, 100);
+
     audio.play();
-    playButton.addEventListener("click", () => {
-      onNowPlayingPlayButtonClicked(id);
-    });
   }
 };
 
@@ -220,11 +214,11 @@ const loadPlaylistTracks = ({ tracks }) => {
     });
 
     let playButton = document.createElement("button");
-    playButton.id = `play-track${id}`;
-    playButton.className = `play w-full absolute left-0 text-lg invisible`;
-    playButton.textContent = "▶";
+    playButton.id = `play-track-${id}`;
+    playButton.className = `play w-full absolute left-0 text-lg invisible material-symbols-outlined`;
+    playButton.textContent = "play_arrow";
     playButton.addEventListener("click", (e) =>
-      onPlayTrack(e, { image, duration, artistName, name, previewUrl, id })
+      playTrack(e, { image, duration, artistName, name, previewUrl, id })
     );
     track.querySelector("p").appendChild(playButton);
     trackSections.appendChild(track);
@@ -233,20 +227,17 @@ const loadPlaylistTracks = ({ tracks }) => {
 
 const fillContentForPlaylist = async (playlistID) => {
   const playlist = await fetchRequest(`${ENDPOINT.playlist}/${playlistID}`);
- const {name, description, images, tracks} = playlist
- console.log(images[0].url, "image");
+  const { name, description, images, tracks } = playlist;
+  console.log(images[0].url, "image");
 
-
-  const coverElement = document.querySelector("#cover-content")
+  const coverElement = document.querySelector("#cover-content");
   coverElement.innerHTML = `
   <article>
   <img class="object-contain h-36 w-36" src="${images[0].url}" alt="" srcset="">
   <h2 id="playlist-name" class="text-4xl">${name}</h2>
   <p id="playlist-details">${tracks.items.length} Songs</p>
 </article>
-  `
-
-
+  `;
 
   const pageContent = document.querySelector("#page-content");
   pageContent.innerHTML = "playlists to be loaded";
@@ -315,6 +306,17 @@ const loadSections = (section) => {
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
+  const volulme = document.querySelector("#volume");
+  const playButton = document.querySelector("#play");
+  // const totalSongDuration = document.querySelector("#total-song-duration");
+  const songDurationCompleted = document.querySelector(
+    "#songDurationCompleted"
+  );
+  const songProgress = document.querySelector("#progress");
+  let timeline = document.querySelector("#timeline");
+  const audioControl = document.querySelector("#audio-control");
+  let progressInterval;
+  loadUserProfile();
   defaultButton.addEventListener("click", () => {
     if (defaultLogOutButton.classList.contains("hidden")) {
       defaultLogOutButton.classList.remove("hidden");
@@ -335,6 +337,35 @@ document.addEventListener("DOMContentLoaded", async () => {
   history.pushState(section, "", `/dashboard/playlist/${section.playlist}`);
   loadSections(section);
 
+  audio.addEventListener("play", () => {
+    const selectedTrackId = audioControl.getAttribute("data-track-id");
+
+    progressInterval = setInterval(() => {
+      if (audio.paused) {
+        return;
+      }
+      songDurationCompleted.textContent = `0:${audio.currentTime.toFixed(0)}`;
+      songProgress.style.width = `${
+        (audio.currentTime / audio.duration) * 100
+      }%`;
+    }, 100);
+    updateIconsForPlayMode(selectedTrackId);
+  });
+
+  audio.addEventListener("pause", () => {
+    if (progressInterval) {
+      clearInterval(progressInterval);
+    }
+
+    const selectedTrackId = audioControl.getAttribute("data-track-id");
+    updatIconsForPauseMode(selectedTrackId);
+
+
+  });
+
+  audio.addEventListener("loadedmetadata", onAudioMetaDataLoaded);
+  playButton.addEventListener("click", togglePlay);
+
   volulme.addEventListener("change", () => {
     audio.volume = volulme.value / 100;
   });
@@ -348,12 +379,15 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.log(e.offSetX, "off set");
       console.log(audio.duration, "duration");
       const timeToSeek = (e.offsetX / parseInt(timelineWidth)) * audio.duration;
-      
+
       console.log(timeToSeek, "timeToSeek");
       audio.currentTime = timeToSeek;
 
-      songProgress.style.width = `${(audio.currentTime / audio.duration) * 100}%`;
-    },false
+      songProgress.style.width = `${
+        (audio.currentTime / audio.duration) * 100
+      }%`;
+    },
+    false
   );
 
   window.addEventListener("popstate", (e) => {
