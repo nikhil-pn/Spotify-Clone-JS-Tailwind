@@ -2,14 +2,14 @@ import { fetchRequest } from "../api";
 import { ENDPOINT, logout, SECTIONTYPE } from "../common";
 
 const audio = new Audio();
-const volulme = document.querySelector("#volume")
-const playButton = document.querySelector("#play")
-const totalSongDuration = document.querySelector("#total-song-duration")
-const songDurationCompleted = document.querySelector("#songDurationCompleted")
-const songProgress = document.querySelector("#progress") 
+const volulme = document.querySelector("#volume");
+const playButton = document.querySelector("#play");
+const totalSongDuration = document.querySelector("#total-song-duration");
+const songDurationCompleted = document.querySelector("#songDurationCompleted");
+const songProgress = document.querySelector("#progress");
 let progressInterval;
 
-const timeline = document.querySelector("#timeline")
+const timeline = document.querySelector("#timeline");
 
 const displayName = document.querySelector("#display-name");
 const defaultName = document.querySelector("#display-name");
@@ -107,10 +107,29 @@ const onTrackSelection = (id, event) => {
 
 // const timeline = document.querySelectorAll("#timeline")
 
-const onAudioMetaDataLoaded = ()=>{
+const onAudioMetaDataLoaded = (id) => {
   totalSongDuration.textContent = `0:${audio.duration.toFixed(0)}`;
+  updateIconsForPlayMode(id)
 
-}
+};
+
+const updateIconsForPlayMode = (id) => {
+  playButton.querySelector("span").textContent = "pause_circle";
+  const playButtonFromTracks = document.querySelector(`#play-track${id}`);
+  playButtonFromTracks.textContent = "||";
+};
+
+const onNowPlayingPlayButtonClicked = (id) => {
+  if (audio.paused) {
+    audio.play();
+    updateIconsForPlayMode(id);
+  } else {
+    audio.pause();
+    playButton.querySelector("span").textContent = "play_circle";
+    const playButtonFromTracks = document.querySelector(`#play-track${id}`);
+    playButtonFromTracks.textContent = "▶";
+  }
+};
 
 const onPlayTrack = (
   event,
@@ -125,19 +144,22 @@ const onPlayTrack = (
   nowPlayingSongImage.src = image.url;
   nowPlayingTitle.textContent = name;
   nowPlayingSongArtists.textContent = artistName;
-  
-  audio.removeEventListener("loadedmetadata", onAudioMetaDataLoaded)
-  audio.addEventListener("loadedmetadata", onAudioMetaDataLoaded)
-  audio.src = previewUrl
-  progressInterval = setInterval(()=>{
-    if(audio.paused){
+
+  audio.removeEventListener("loadedmetadata", () => onAudioMetaDataLoaded(id));
+  audio.addEventListener("loadedmetadata", () => onAudioMetaDataLoaded(id));
+  audio.src = previewUrl;
+  progressInterval = setInterval(() => {
+    if (audio.paused) {
       return;
+      ḥ;
     }
-    songDurationCompleted.textContent = `0:${audio.currentTime.toFixed(0)}`
+    songDurationCompleted.textContent = `0:${audio.currentTime.toFixed(0)}`;
     songProgress.style.width = `${(audio.currentTime / audio.duration) * 100}%`;
-  }, 100)
+  }, 100);
   audio.play();
-  
+  playButton.addEventListener("click", () => {
+    onNowPlayingPlayButtonClicked(id);
+  });
 };
 
 const loadPlaylistTracks = ({ tracks }) => {
