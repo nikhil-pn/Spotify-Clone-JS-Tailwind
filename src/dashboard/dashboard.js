@@ -232,9 +232,24 @@ const loadPlaylistTracks = ({ tracks }) => {
 };
 
 const fillContentForPlaylist = async (playlistID) => {
+  const playlist = await fetchRequest(`${ENDPOINT.playlist}/${playlistID}`);
+ const {name, description, images, tracks} = playlist
+ console.log(images[0].url, "image");
+
+
+  const coverElement = document.querySelector("#cover-content")
+  coverElement.innerHTML = `
+  <article>
+  <img class="object-contain h-36 w-36" src="${images[0].url}" alt="" srcset="">
+  <h2 id="playlist-name" class="text-4xl">${name}</h2>
+  <p id="playlist-details">${tracks.items.length} Songs</p>
+</article>
+  `
+
+
+
   const pageContent = document.querySelector("#page-content");
   pageContent.innerHTML = "playlists to be loaded";
-  const playlist = await fetchRequest(`${ENDPOINT.playlist}/${playlistID}`);
   pageContent.innerHTML = `
   <header class="mx-8 py-4 z-20 border-secondary border-b-[0.5px]" id="playlist-header">
   <nav class="py-2">
