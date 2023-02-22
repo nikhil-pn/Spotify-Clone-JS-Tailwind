@@ -31,6 +31,11 @@
   font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 48;
 }
 
+.track.playing .track-no, .track.playing .song-title{
+  color: theme("colors.green");
+
+}
+
 @media (width <= 500px) {
   #spotify-login-logo {
     height: 10vh;

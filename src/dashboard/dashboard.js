@@ -157,6 +157,9 @@ const playTrack = (
   event,
   { image, duration, artistName, name, previewUrl, id }
 ) => {
+  if(event?.stopPropagation){
+    event.stopPropagation()
+  }
   if (audio.src === previewUrl) {
     togglePlay();
   } else {
@@ -202,8 +205,8 @@ const loadPlaylistTracks = ({ tracks }) => {
     <p class=" relative w-full flex items-center justify-center justify-self-center" ><span class="track-no">${(trackNumber += 1)}</span></p>
               <section  class="grid grid-cols-[auto_1fr] place-items-center  gap-2">
                 <img  class="h-10 w-10" src="${image.url}" alt="${name}">
-                <article class="flex flex-col gap-2 justify-center">
-                  <h2 class="text-primary text-base line-clamp-1">${name}</h2>
+                <article class="song-title flex flex-col gap-2 justify-center">
+                  <h2 class="song-title text-primary text-base line-clamp-1">${name}</h2>
                   <p class="text-xs text-secondary line-clamp-1 ">${artistName}</p>
                 </article>
               </section>
@@ -340,6 +343,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   audio.addEventListener("play", () => {
     const selectedTrackId = audioControl.getAttribute("data-track-id");
 
+    const tracks = document.querySelector("#tracks")
+    let playingTrack = tracks?.querySelector("section.playing")
+    const selectedTrack = tracks?.querySelector(`[id="${selectedTrackId}"]`);
+    selectedTrack?.classList.add("playing");
+
+    if(playingTrack?.id !==selectedTrack?.id){
+      playingTrack?.classList.remove("playing");
+    }
     progressInterval = setInterval(() => {
       if (audio.paused) {
         return;
