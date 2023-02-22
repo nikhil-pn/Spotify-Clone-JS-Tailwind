@@ -109,14 +109,21 @@ const onTrackSelection = (id, event) => {
 
 const onAudioMetaDataLoaded = (id) => {
   totalSongDuration.textContent = `0:${audio.duration.toFixed(0)}`;
-  updateIconsForPlayMode(id)
-
+  updateIconsForPlayMode(id);
 };
 
 const updateIconsForPlayMode = (id) => {
   playButton.querySelector("span").textContent = "pause_circle";
   const playButtonFromTracks = document.querySelector(`#play-track${id}`);
   playButtonFromTracks.textContent = "||";
+  playButtonFromTracks.setAttribute("data-play", "true");
+};
+
+const updatIconsForPauseMode = (id) => {
+  playButton.querySelector("span").textContent = "play_circle";
+  const playButtonFromTracks = document.querySelector(`#play-track${id}`);
+  playButtonFromTracks.textContent = "▶";
+  playButtonFromTracks.removeAttribute("data-play");
 };
 
 const onNowPlayingPlayButtonClicked = (id) => {
@@ -125,9 +132,7 @@ const onNowPlayingPlayButtonClicked = (id) => {
     updateIconsForPlayMode(id);
   } else {
     audio.pause();
-    playButton.querySelector("span").textContent = "play_circle";
-    const playButtonFromTracks = document.querySelector(`#play-track${id}`);
-    playButtonFromTracks.textContent = "▶";
+    updatIconsForPauseMode(id);
   }
 };
 
@@ -138,28 +143,46 @@ const onPlayTrack = (
   console.log("reached here");
   console.log(image, duration, artistName, name, previewUrl, id);
 
-  const nowPlayingSongImage = document.querySelector("#now-playing-image");
-  const nowPlayingSongArtists = document.querySelector("#now-playing-artists");
-  const nowPlayingTitle = document.querySelector("#now-playing-song");
-  nowPlayingSongImage.src = image.url;
-  nowPlayingTitle.textContent = name;
-  nowPlayingSongArtists.textContent = artistName;
+  const buttonWithDataPlay = document.querySelector("[data-play]");
 
-  audio.removeEventListener("loadedmetadata", () => onAudioMetaDataLoaded(id));
-  audio.addEventListener("loadedmetadata", () => onAudioMetaDataLoaded(id));
-  audio.src = previewUrl;
-  progressInterval = setInterval(() => {
+  if (buttonWithDataPlay?.id === `play-track${id}`) {
     if (audio.paused) {
-      return;
-      ḥ;
+      audio.play();
+      updateIconsForPlayMode(id);
+    } else {
+      updatIconsForPauseMode(id);
+      audio.pause();
     }
-    songDurationCompleted.textContent = `0:${audio.currentTime.toFixed(0)}`;
-    songProgress.style.width = `${(audio.currentTime / audio.duration) * 100}%`;
-  }, 100);
-  audio.play();
-  playButton.addEventListener("click", () => {
-    onNowPlayingPlayButtonClicked(id);
-  });
+  } else {
+
+    const nowPlayingSongImage = document.querySelector("#now-playing-image");
+    const nowPlayingSongArtists = document.querySelector(
+      "#now-playing-artists"
+    );
+    const nowPlayingTitle = document.querySelector("#now-playing-song");
+    nowPlayingSongImage.src = image.url;
+    nowPlayingTitle.textContent = name;
+    nowPlayingSongArtists.textContent = artistName;
+
+    audio.removeEventListener("loadedmetadata", () =>
+      onAudioMetaDataLoaded(id)
+    );
+    audio.addEventListener("loadedmetadata", () => onAudioMetaDataLoaded(id));
+    audio.src = previewUrl;
+    progressInterval = setInterval(() => {
+      if (audio.paused) {
+        return;
+      }
+      songDurationCompleted.textContent = `0:${audio.currentTime.toFixed(0)}`;
+      songProgress.style.width = `${
+        (audio.currentTime / audio.duration) * 100
+      }%`;
+    }, 100);
+    audio.play();
+    playButton.addEventListener("click", () => {
+      onNowPlayingPlayButtonClicked(id);
+    });
+  }
 };
 
 const loadPlaylistTracks = ({ tracks }) => {
@@ -297,6 +320,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   // history.pushState(section, "", "");
   history.pushState(section, "", `/dashboard/playlist/${section.playlist}`);
   loadSections(section);
+
+  volulme.addEventListener("change", ()=>{
+    audio.volume = volulme.value / 100
+  })
 
   window.addEventListener("popstate", (e) => {
     loadSections(e.state);
