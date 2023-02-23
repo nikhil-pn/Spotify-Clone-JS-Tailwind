@@ -373,31 +373,29 @@ const loadUserName = async () => {
   coverElement.innerHTML = `<h1 class="text-8xl text-semi-bold absolute top-20 left-10 "> Hello ${display_name} </h1>`;
 };
 
-const onUserPlaylistClick = (id)=>{
-  const section = {type: SECTIONTYPE.PLAYLIST, playlist: id}
+const onUserPlaylistClick = (id) => {
+  const section = { type: SECTIONTYPE.PLAYLIST, playlist: id };
   history.pushState(section, "", `dashboard/playlist/${id}`);
-  loadSections(section)
-}
+  loadSections(section);
+};
 
 const loadUserPlaylist = async () => {
   const playlist = await fetchRequest(ENDPOINT.userPlaylist);
 
-  console.log(playlist, 'playlist');
+  console.log(playlist, "playlist");
   const userPlaylistSection = document.querySelector("#user-playlists > ul");
 
-  userPlaylistSection.innerHTML = ""
-  for (let {name , id} of playlist.items){
+  userPlaylistSection.innerHTML = "";
+  for (let { name, id } of playlist.items) {
     const li = document.createElement("li");
-    li.textContent = name
-    li.classList = "cursor-pointer hover:text-primary"
-    li.addEventListener("click", () =>onUserPlaylistClick(id))
-    userPlaylistSection.appendChild(li)
+    li.textContent = name;
+    li.classList = "cursor-pointer hover:text-primary";
+    li.addEventListener("click", () => onUserPlaylistClick(id));
+    userPlaylistSection.appendChild(li);
   }
-
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
-  
 
   const volulme = document.querySelector("#volume");
   const playButton = document.querySelector("#play");
@@ -413,7 +411,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   let progressInterval;
   loadUserProfile();
-  loadUserPlaylist()
+  loadUserPlaylist();
   defaultButton.addEventListener("click", () => {
     if (defaultLogOutButton.classList.contains("hidden")) {
       defaultLogOutButton.classList.remove("hidden");
