@@ -9,27 +9,22 @@ import {
 } from "../common";
 
 const audio = new Audio();
-// const volulme = document.querySelector("#volume");
-// const playButton = document.querySelector("#play");
-// const totalSongDuration = document.querySelector("#total-song-duration");
-// const songDurationCompleted = document.querySelector("#songDurationCompleted");
-// const songProgress = document.querySelector("#progress");
-// let progressInterval;
 
-// let timeline = document.querySelector("#timeline");
 
-const displayName = document.querySelector("#display-name");
+// const displayName = document.querySelector("#display-name");
 const defaultName = document.querySelector("#display-name");
 const defaultImage = document.querySelector("#default-image");
 const defaultButton = document.querySelector("#user-profile-button");
 const defaultLogOutButton = document.querySelector("#default-logout-button");
 
 const loadUserProfile = async () => {
+  const defaultImage = document.querySelector("#default-image");
+  const profileButton = document.querySelector("#user-profile-btn");
+  const displayNameElement = document.querySelector("#display-name");
+
   const { display_name: displayName, images } = await fetchRequest(
     ENDPOINT.userInfo
   );
-
-  defaultName.textContent = displayName;
 
   if (images?.length) {
     defaultImage.classList.add("hidden");
@@ -71,9 +66,11 @@ const loadPlayLists = () => {
   loadPlayList(ENDPOINT.toplists, "top-playlist-items");
 };
 
-const fillContentForDashboard = () => {
-  const pageContent = document.querySelector("#page-content");
 
+const fillContentForDashboard = () => {
+  loadUserName()
+ 
+  const pageContent = document.querySelector("#page-content");
   const playListMap = new Map([
     ["featured", "featured-playlist-items"],
     ["Top Playlist", "top-playlist-items"],
@@ -111,8 +108,6 @@ const onTrackSelection = (id, event) => {
     }
   });
 };
-
-// const timeline = document.querySelectorAll("#timeline")
 
 const onAudioMetaDataLoaded = (id) => {
   const totalSongDuration = document.querySelector("#total-song-duration");
@@ -183,7 +178,7 @@ const playNextTrack = () => {
 const playPrevTrack = () => {
   const { currentTrackIndex = -1, tracks = null } = findCurrentTrack() ?? {};
   if (currentTrackIndex > 0) {
-    playTrack(null, tracks[currentTrackIndex -1]);
+    playTrack(null, tracks[currentTrackIndex - 1]);
   }
 };
 
@@ -207,15 +202,13 @@ const playTrack = (
     nowPlayingSongArtists.textContent = artistName;
 
     const audioControl = document.querySelector("#audio-control");
-    const songInfo = document.querySelector("#song-info")
-
-    
+    const songInfo = document.querySelector("#song-info");
 
     audioControl.setAttribute("data-track-id", id);
     audio.src = previewUrl;
 
     audio.play();
-    songInfo.classList.remove("invisible")
+    songInfo.classList.remove("invisible");
   }
 };
 
@@ -315,6 +308,25 @@ const fillContentForPlaylist = async (playlistID) => {
 const onContentScroll = (e) => {
   const { scrollTop } = e.target;
   const header = document.querySelector("#top-header");
+  const coverElement = document.querySelector("#cover-content");
+  const totalHeight = coverElement.offsetHeight;
+  const fiftyPercentHeight = totalHeight / 2;
+  const coverOpacity =
+    100 - (scrollTop >= totalHeight ? 100 : (scrollTop / totalHeight) * 100);
+  coverElement.style.opacity = `${coverOpacity}%`;
+
+  let headerOpacity = 0;
+  // once 50% of cover element is crossed, start increasing the opacity
+  if (scrollTop >= fiftyPercentHeight && scrollTop <= totalHeight) {
+    let totatDistance = totalHeight - fiftyPercentHeight;
+    let coveredDistance = scrollTop - fiftyPercentHeight;
+    headerOpacity = (coveredDistance / totatDistance) * 100;
+  } else if (scrollTop > totalHeight) {
+    headerOpacity = 100;
+  } else if (scrollTop < fiftyPercentHeight) {
+    headerOpacity = 0;
+  }
+  header.style.background = `rgba(0 0 0 / ${headerOpacity}%)`;
 
   if (scrollTop >= header.offsetHeight) {
     header.classList.add("sticky", "top-0", "bg-black");
@@ -356,8 +368,18 @@ const loadSections = (section) => {
     .querySelector("#content")
     .addEventListener("scroll", onContentScroll);
 };
+const loadUserName = async () => {
+  const { display_name} = await fetchRequest(
+    ENDPOINT.userInfo
+  );
+  const coverElement = document.querySelector("#cover-content");
+  coverElement.innerHTML = ""
+  coverElement.innerHTML = `<h1 class="text-8xl text-semi-bold absolute top-20 left-10 "> Hello ${display_name} </h1>`;
 
+}
 document.addEventListener("DOMContentLoaded", async () => {
+  // loadUserName()
+
   const volulme = document.querySelector("#volume");
   const playButton = document.querySelector("#play");
   // const totalSongDuration = document.querySelector("#total-song-duration");
@@ -384,13 +406,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     logout();
   });
 
-  // const section = { type: SECTIONTYPE.DASHBOARD };
-  const section = {
-    type: SECTIONTYPE.PLAYLIST,
-    playlist: "37i9dQZF1DXaotNUt9NoYd",
-  };
-  // history.pushState(section, "", "");
-  history.pushState(section, "", `/dashboard/playlist/${section.playlist}`);
+  const section = { type: SECTIONTYPE.DASHBOARD };
+  // const section = {
+  //   type: SECTIONTYPE.PLAYLIST,
+  //   playlist: "37i9dQZF1DXaotNUt9NoYd",
+  // };
+  history.pushState(section, "", "");
+  // history.pushState(section, "", `/dashboard/playlist/${section.playlist}`);
   loadSections(section);
 
   audio.addEventListener("play", () => {

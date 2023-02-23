@@ -62,15 +62,10 @@
         </header>
         <article
           id="cover-content"
-          class="grid grid-cols-[auto_1fr] content-center -z-[1] h-72 w-full absolute top-0 px-8 py-4 bg-gradient-to-b from-light-black to to-black-base"
+          class="grid grid-cols-[250px_1fr] auto-rows-[250px_1fr] content-center -z-[1] h-72 w-full absolute top-0  px-8 py-4 bg-gradient-to-b from-light-black to to-black-base"
         >
-          <h1 class="text-6xl">Hello NIkhil</h1>
-          <!-- <article>
-            <img src="" alt="" srcset="">
-            <h2 id="playlist-name" class="text-4xl">Playlist name</h2>
-            <p id="playlist-artists">artists</p>
-            <p id="playlist-details">likes</p>
-          </article> -->
+          <!-- <h1 id="cover-name" class="text-6xl"></h1> -->
+     
         </article>
         <article id="page-content" class="bg-black-base mt-48">
           <header class="px-8" id="playlist-header">
@@ -89,10 +84,13 @@
 
       <footer
         id="now-playing"
-        class="grid w-full place-items-center border-t border-t-light-black bg-black-secondary p-4 text-secondary"
+        class="grid w-full place-items-center border-t border-t-light-black bg-black-secondary p-2 text-secondary"
       >
         <section class="grid grid-cols-[1fr_2fr_1fr] gap-4 w-full">
-          <section id="song-info" class="grid grid-cols-[auto_1fr] place-content-center gap-4 invisible">
+          <section
+            id="song-info"
+            class="grid grid-cols-[auto_1fr] place-content-center gap-4 invisible"
+          >
             <img id="now-playing-image" class="h-12 w-12" src="" alt=" " />
             <section class="flex flex-col justify-center">
               <h2
@@ -110,18 +108,16 @@
               id="audio-control"
               class="flex items-center justify-center flex-col gap-4"
             >
-              <section
-                class="flex items-center justify-center hover:text-white"
-              >
-                <button id="prev">
+              <section class="flex items-center justify-center">
+                <button id="prev" class="hover:text-primary">
                   <span
-                    style="font-size: 40px"
+                    style="font-size: 32px"
                     class="material-symbols-outlined"
                   >
                     skip_previous
                   </span>
                 </button>
-                <button id="play">
+                <button id="play" class="hover:text-primary">
                   <span
                     style="font-size: 40px"
                     class="material-symbols-outlined"
@@ -129,9 +125,9 @@
                     play_circle
                   </span>
                 </button>
-                <button id="next">
+                <button id="next" class="hover:text-primary">
                   <span
-                    style="font-size: 40px"
+                    style="font-size: 32px"
                     class="material-symbols-outlined"
                   >
                     skip_next
@@ -140,7 +136,7 @@
               </section>
             </section>
             <section class="w-full flex items-center justify-center p-1 gap-4">
-              <span id="songDurationCompleted">0:00</span>
+              <span id="songDurationCompleted" class="text-sm">0:00</span>
               <section
                 id="timeline"
                 class="w-full cursor-pointer rounded-3xl bg-secondary"
@@ -150,7 +146,7 @@
                   class="h-2 w-0 rounded-3xl bg-green"
                 ></section>
               </section>
-              <span id="total-song-duration">0:00</span>
+              <span id="total-song-duration" class="text-sm">0:00</span>
             </section>
             <!-- section for volume control -->
           </section>
