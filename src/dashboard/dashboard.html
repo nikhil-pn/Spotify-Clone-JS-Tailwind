@@ -20,7 +20,30 @@
     <main
       class="text-white h-full grid-template grid-template-areas grid grid-cols-[250px_1fr] grid-rows-[1fr_auto]"
     >
-      <aside id="sidenav">Sidenav</aside>
+      <aside id="sidenav">
+        <nav class="flex flex-col items-start gap-8 py-8 px-6">
+          <section class="grid  place-content-center ">
+            <a href="/">
+              <img 
+                class="object-contain grid"
+                src="../Spotify_Logo_RGB_Green.png"
+                alt=""
+              />
+            </a>
+          </section>
+          <section>
+            <ul class="flex flex-col gap-4 text-sm text-secondary">
+              <li class="cursor-pointer flex items-center gap-2 hover:text-primary"><span class="material-symbols-outlined">home</span>Home</li>
+              <li class="cursor-pointer flex items-center gap-2 hover:text-primary"><span class="material-symbols-outlined">search</span>Search</li>
+            </ul>
+          </section>
+          <section id="user-playlists" class="w-full border-t border-secondary pt-4">
+            <ul class="flex flex-col gap-4 text-sm text-secondary">
+              <li class=" hover:text-primary cursor-pointer">Playlist 1</li>
+            </ul>
+          </section>
+        </nav>
+      </aside>
       <section id="content" class="bg-transparent overflow-auto relative">
         <header id="top-header" class="z-20 px-8 py-4 bg-transparent">
           <nav class="flex justify-end relative">
@@ -62,10 +85,9 @@
         </header>
         <article
           id="cover-content"
-          class="grid grid-cols-[250px_1fr] auto-rows-[250px_1fr] content-center -z-[1] h-72 w-full absolute top-0  px-8 py-4 bg-gradient-to-b from-light-black to to-black-base"
+          class="grid grid-cols-[250px_1fr] auto-rows-[250px_1fr] content-center -z-[1] h-72 w-full absolute top-0 px-8 py-4 bg-gradient-to-b from-light-black to to-black-base"
         >
           <!-- <h1 id="cover-name" class="text-6xl"></h1> -->
-     
         </article>
         <article id="page-content" class="bg-black-base mt-48">
           <header class="px-8" id="playlist-header">
