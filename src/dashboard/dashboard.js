@@ -10,7 +10,6 @@ import {
 
 const audio = new Audio();
 
-
 // const displayName = document.querySelector("#display-name");
 const defaultName = document.querySelector("#display-name");
 const defaultImage = document.querySelector("#default-image");
@@ -66,10 +65,9 @@ const loadPlayLists = () => {
   loadPlayList(ENDPOINT.toplists, "top-playlist-items");
 };
 
-
 const fillContentForDashboard = () => {
-  loadUserName()
- 
+  loadUserName();
+
   const pageContent = document.querySelector("#page-content");
   const playListMap = new Map([
     ["featured", "featured-playlist-items"],
@@ -369,20 +367,40 @@ const loadSections = (section) => {
     .addEventListener("scroll", onContentScroll);
 };
 const loadUserName = async () => {
-  const { display_name} = await fetchRequest(
-    ENDPOINT.userInfo
-  );
+  const { display_name } = await fetchRequest(ENDPOINT.userInfo);
   const coverElement = document.querySelector("#cover-content");
-  coverElement.innerHTML = ""
+  coverElement.innerHTML = "";
   coverElement.innerHTML = `<h1 class="text-8xl text-semi-bold absolute top-20 left-10 "> Hello ${display_name} </h1>`;
+};
 
+const onUserPlaylistClick = (id)=>{
+  const section = {type: SECTIONTYPE.PLAYLIST, playlist: id}
+  history.pushState(section, "", `dashboard/playlist/${id}`);
+  loadSections(section)
 }
+
+const loadUserPlaylist = async () => {
+  const playlist = await fetchRequest(ENDPOINT.userPlaylist);
+
+  console.log(playlist, 'playlist');
+  const userPlaylistSection = document.querySelector("#user-playlists > ul");
+
+  userPlaylistSection.innerHTML = ""
+  for (let {name , id} of playlist.items){
+    const li = document.createElement("li");
+    li.textContent = name
+    li.classList = "cursor-pointer hover:text-primary"
+    li.addEventListener("click", () =>onUserPlaylistClick(id))
+    userPlaylistSection.appendChild(li)
+  }
+
+};
+
 document.addEventListener("DOMContentLoaded", async () => {
-  // loadUserName()
+  
 
   const volulme = document.querySelector("#volume");
   const playButton = document.querySelector("#play");
-  // const totalSongDuration = document.querySelector("#total-song-duration");
   const songDurationCompleted = document.querySelector(
     "#songDurationCompleted"
   );
@@ -395,6 +413,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   let progressInterval;
   loadUserProfile();
+  loadUserPlaylist()
   defaultButton.addEventListener("click", () => {
     if (defaultLogOutButton.classList.contains("hidden")) {
       defaultLogOutButton.classList.remove("hidden");
