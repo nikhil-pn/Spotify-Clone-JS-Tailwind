@@ -1,7 +1,6 @@
 # Spotify-Clone-JS-Tailwind
 
 ## Video Demo of the Spotify-Clone-JS-Tailwind
-[label](Demo/Spotify%20Player%20-%20Google%20Chrome%202023-03-23%2000-52-46.mp4)
 
 ## Login Page Spotify
 ![Login Page](Demo/Screenshot%20(531).png)
