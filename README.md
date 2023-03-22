@@ -2,6 +2,11 @@
 
 ## Video Demo of the Spotify-Clone-JS-Tailwind
 
+
+https://user-images.githubusercontent.com/110462696/227015962-3456a927-bc55-45ad-9a79-15aa1d3f5511.mp4
+
+
+
 ## Login Page Spotify
 ![Login Page](Demo/Screenshot%20(531).png)
 ## Implicit Login Popover page!
